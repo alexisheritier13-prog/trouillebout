@@ -9,7 +9,7 @@
   "ctaSecondaryLabel": "Voir nos réalisations",
   "reassurance1": "Devis gratuit",
   "reassurance2": "Vendôme & 30 km alentour",
-  "heroImage": "",
+  "heroImage": "/images/stock/hero-facade-pierre.jpg",
   "badgeStatNumber": "+500",
   "badgeStatLabel": "Chantiers livrés",
   "badgeYearsNumber": "40",
@@ -21,7 +21,7 @@
   "aboutTitleLine1": "Une famille,",
   "aboutTitleLine2": "un savoir transmis",
   "aboutParagraph": "Depuis 1985, la maison Trouillebout bâtit autour de Vendôme. Le grand-père a posé la première pierre, les petits-fils tiennent la truelle aujourd'hui. Même exigence, même parole donnée.",
-  "aboutImage": "",
+  "aboutImage": "/images/stock/equipe-atelier.jpg",
   "stats": [
     { "value": "3", "label": "Générations" },
     { "value": "40", "label": "Ans d'expérience" },
