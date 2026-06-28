@@ -1,43 +1,64 @@
 {
-  "heroEyebrow": "Maçons à Vendôme depuis 1985",
-  "heroLine1": "Bâtir ce qui",
-  "heroLine2": "dure, de père",
-  "heroLine3Prefix": "en ",
-  "heroAccent": "fils.",
-  "heroParagraph": "Entreprise familiale de maçonnerie générale. Trois générations de bâtisseurs, le même soin du détail sur chaque chantier — de la fondation au ravalement.",
-  "ctaPrimaryLabel": "Demander un devis",
-  "ctaSecondaryLabel": "Voir nos réalisations",
-  "reassurance1": "Devis gratuit",
-  "reassurance2": "Vendôme & 30 km alentour",
-  "heroImage": "/images/stock/hero-facade-pierre.jpg",
-  "badgeStatNumber": "+500",
-  "badgeStatLabel": "Chantiers livrés",
-  "badgeYearsNumber": "40",
-  "badgeYearsLabel": "d'expérience",
-  "servicesEyebrow": "Nos savoir-faire",
-  "servicesTitle": "Ce qu'on sait faire",
-  "servicesLinkLabel": "Tous nos métiers",
-  "aboutEyebrow": "Pourquoi nous",
-  "aboutTitleLine1": "Une famille,",
-  "aboutTitleLine2": "un savoir transmis",
+  "badgeStatNumber": "+200",
   "aboutParagraph": "Depuis 1985, la maison Trouillebout bâtit autour de Vendôme. Le grand-père a posé la première pierre, les petits-fils tiennent la truelle aujourd'hui. Même exigence, même parole donnée.",
-  "aboutImage": "/images/stock/equipe-atelier.jpg",
-  "stats": [
-    { "value": "3", "label": "Générations" },
-    { "value": "40", "label": "Ans d'expérience" },
-    { "value": "+500", "label": "Chantiers" }
-  ],
-  "processEyebrow": "Notre façon de travailler",
-  "processTitle": "Simple et carré",
-  "processSteps": [
-    { "number": "01", "title": "On vient voir", "text": "Visite du chantier, on écoute votre projet et on prend les mesures. Sans engagement." },
-    { "number": "02", "title": "Devis clair", "text": "Un devis détaillé, ligne par ligne. Pas de surprise, pas de petit astérisque." },
-    { "number": "03", "title": "On bâtit", "text": "On exécute dans les délais, vous suivez l'avancement. Chantier propre à la livraison." }
-  ],
+  "badgeYearsLabel": "d'expérience",
+  "heroImage": "/images/stock/hero-facade-pierre.jpg",
+  "ctaPrimaryLabel": "Demander un devis",
+  "heroLine1": "Bâtir ce qui",
   "realisationsEyebrow": "Réalisations",
-  "realisationsTitle": "Nos derniers chantiers",
-  "realisationsLinkLabel": "Tout voir",
+  "heroAccent": "fils.",
+  "heroLine2": "dure, de père",
   "ctaTitle": "Un projet en tête ?",
+  "processTitle": "Simple et carré",
+  "servicesEyebrow": "Nos savoir-faire",
+  "aboutImage": "/images/stock/equipe-atelier.jpg",
+  "heroEyebrow": "Maçons à Vendôme depuis 1985",
+  "ctaSecondaryLabel": "Voir nos réalisations",
+  "realisationsTitle": "Nos derniers chantiers",
+  "aboutTitleLine1": "Une famille,",
+  "ctaButtonLabel": "Nous contacter",
+  "aboutTitleLine2": "un savoir transmis",
+  "realisationsLinkLabel": "Tout voir",
+  "heroParagraph": "Entreprise familiale de maçonnerie générale. Trois générations de bâtisseurs, le même soin du détail sur chaque chantier — de la fondation au ravalement.",
+  "reassurance1": "Devis gratuit",
+  "heroLine3Prefix": "en ",
+  "reassurance2": "Vendôme & 30 km alentour",
+  "processSteps": [
+    {
+      "number": "01",
+      "title": "On vient voir",
+      "text": "Visite du chantier, on écoute votre projet et on prend les mesures. Sans engagement."
+    },
+    {
+      "number": "02",
+      "title": "Devis clair",
+      "text": "Un devis détaillé, ligne par ligne. Pas de surprise, pas de petit astérisque."
+    },
+    {
+      "number": "03",
+      "title": "On bâtit",
+      "text": "On exécute dans les délais, vous suivez l'avancement. Chantier propre à la livraison."
+    }
+  ],
+  "servicesTitle": "Ce qu'on sait faire",
+  "processEyebrow": "Notre façon de travailler",
+  "servicesLinkLabel": "Tous nos métiers",
+  "badgeYearsNumber": "20",
+  "aboutEyebrow": "Pourquoi nous",
+  "badgeStatLabel": "Chantiers livrés",
   "ctaText": "On se déplace, on en parle autour d'un café. Devis gratuit et sans engagement.",
-  "ctaButtonLabel": "Nous contacter"
+  "stats": [
+    {
+      "value": "3",
+      "label": "Générations"
+    },
+    {
+      "value": "40",
+      "label": "Ans d'expérience"
+    },
+    {
+      "value": "+500",
+      "label": "Chantiers"
+    }
+  ]
 }
