@@ -2,9 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Lightbox from "../components/Lightbox.astro";
 import ServiceIcon from "../components/ServiceIcon.astro";
 import PlaceholderImage from "../components/PlaceholderImage.astro";
-import { getEntry, getCollection } from "astro:content";
+import { getEntry, getCollection, type CollectionEntry } from "astro:content";
 
 const home = (await getEntry("pages", "home"))!.data;
 
@@ -16,6 +17,19 @@ const realisations = (await getCollection("realisations")).sort(
   (a, b) => a.data.order - b.data.order
 );
 const [realFeature, realSmall1, realSmall2] = realisations;
+
+function lightboxData(entry: CollectionEntry<"realisations">) {
+  const images = [entry.data.image, ...(entry.data.gallery ?? [])].filter(Boolean);
+  return {
+    "data-lightbox-trigger": true,
+    "data-images": JSON.stringify(images),
+    "data-location": entry.data.location,
+    "data-year": entry.data.year,
+    "data-title": entry.data.title,
+    "data-description": entry.data.description ?? "",
+    "data-placeholder": `Chantier — ${entry.data.title}`,
+  };
+}
 ---
 
 <Layout title="Accueil">
@@ -154,7 +168,7 @@ const [realFeature, realSmall1, realSmall2] = realisations;
       <a href="/realisations/" class="link-underline">{home.realisationsLinkLabel} →</a>
     </div>
     <div class="realisations-grid">
-      <div class="real-large reveal" data-hover-zoom>
+      <div class="real-large reveal" data-hover-zoom {...(realFeature ? lightboxData(realFeature) : {})}>
         <PlaceholderImage
           src={realFeature?.data.image}
           alt={realFeature?.data.title}
@@ -169,7 +183,7 @@ const [realFeature, realSmall1, realSmall2] = realisations;
       <div class="real-small-col">
         {
           [realSmall1, realSmall2].map((item) => (
-            <div class="real-small reveal" data-hover-zoom>
+            <div class="real-small reveal" data-hover-zoom {...(item ? lightboxData(item) : {})}>
               <PlaceholderImage
                 src={item?.data.image}
                 alt={item?.data.title}
@@ -198,6 +212,7 @@ const [realFeature, realSmall1, realSmall2] = realisations;
     </div>
   </section>
 
+  <Lightbox />
   <Footer />
 </Layout>
 

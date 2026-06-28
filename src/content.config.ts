@@ -25,6 +25,7 @@ const realisations = defineCollection({
     size: z.enum(["full", "tall", "normal", "feature"]),
     description: z.string().optional(),
     image: z.string().optional(),
+    gallery: z.array(z.string()).optional(),
   }),
 });
 

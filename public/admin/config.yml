@@ -157,5 +157,10 @@ collections:
           - { label: "Grande (paire)", value: "tall" }
           - { label: "Normale (paire)", value: "normal" }
           - { label: "Mise en avant (avec texte)", value: "feature" }
-      - { label: "Description (uniquement pour « Mise en avant »)", name: "description", widget: "text", required: false }
-      - { label: "Photo", name: "image", widget: "image", required: false }
+      - { label: "Description (affichée dans la fenêtre qui s'ouvre au clic sur la photo)", name: "description", widget: "text", required: false }
+      - { label: "Photo principale", name: "image", widget: "image", required: false }
+      - label: "Photos supplémentaires (optionnel)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        field: { label: "Photo", name: "image", widget: "image" }

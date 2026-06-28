@@ -1,0 +1,328 @@
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-backdrop" data-lightbox-close></div>
+  <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Fermer">✕</button>
+
+    <div class="lightbox-media">
+      <button type="button" class="lightbox-nav lightbox-prev" data-lightbox-prev aria-label="Photo précédente">‹</button>
+      <div class="lightbox-image-wrap">
+        <div class="placeholder-slot lightbox-placeholder" id="lightbox-placeholder">
+          <span id="lightbox-placeholder-label"></span>
+        </div>
+        <img id="lightbox-img" class="lightbox-img" alt="" />
+      </div>
+      <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label="Photo suivante">›</button>
+    </div>
+
+    <div class="lightbox-dots" id="lightbox-dots"></div>
+
+    <div class="lightbox-info">
+      <span class="lightbox-tag" id="lightbox-tag"></span>
+      <h3 class="lightbox-title" id="lightbox-title"></h3>
+      <p class="lightbox-description" id="lightbox-description"></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .lightbox.is-open {
+    display: flex;
+  }
+
+  .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(19, 35, 58, 0.82);
+  }
+
+  .lightbox-panel {
+    position: relative;
+    background: var(--white);
+    width: min(900px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .lightbox-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .lightbox-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 56vh;
+  }
+
+  .lightbox-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  .lightbox-placeholder {
+    position: absolute;
+    inset: 0;
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(19, 35, 58, 0.75);
+    color: var(--white);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    display: none;
+  }
+
+  .lightbox-prev {
+    left: 12px;
+  }
+
+  .lightbox-next {
+    right: 12px;
+  }
+
+  .lightbox-media.has-multiple .lightbox-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 0 0;
+  }
+
+  .lightbox-dots.has-multiple {
+    display: flex;
+  }
+
+  .lightbox-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border-chip);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .lightbox-dot.is-active {
+    background: var(--orange);
+  }
+
+  .lightbox-info {
+    padding: 24px 32px 32px;
+  }
+
+  .lightbox-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .lightbox-title {
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 10px 0 0;
+  }
+
+  .lightbox-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 14px 0 0;
+    max-width: 600px;
+  }
+
+  @media (max-width: 600px) {
+    .lightbox {
+      padding: 0;
+    }
+
+    .lightbox-panel {
+      max-height: 100vh;
+      height: 100%;
+    }
+
+    .lightbox-image-wrap {
+      height: 42vh;
+    }
+
+    .lightbox-info {
+      padding: 20px 20px 28px;
+    }
+
+    .lightbox-title {
+      font-size: 22px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const lightbox = document.getElementById("lightbox");
+  const panel = lightbox?.querySelector<HTMLElement>(".lightbox-panel");
+  const media = lightbox?.querySelector<HTMLElement>(".lightbox-media");
+  const dotsWrap = document.getElementById("lightbox-dots");
+  const imgEl = document.getElementById("lightbox-img") as HTMLImageElement | null;
+  const placeholderEl = document.getElementById("lightbox-placeholder");
+  const placeholderLabelEl = document.getElementById("lightbox-placeholder-label");
+  const tagEl = document.getElementById("lightbox-tag");
+  const titleEl = document.getElementById("lightbox-title");
+  const descriptionEl = document.getElementById("lightbox-description");
+
+  let images: string[] = [];
+  let currentIndex = 0;
+  let placeholderLabel = "";
+
+  function renderImage() {
+    const src = images[currentIndex];
+    if (src) {
+      if (imgEl) {
+        imgEl.src = src;
+        imgEl.style.display = "block";
+      }
+      if (placeholderEl) placeholderEl.style.display = "none";
+    } else {
+      if (imgEl) imgEl.style.display = "none";
+      if (placeholderEl) placeholderEl.style.display = "flex";
+      if (placeholderLabelEl) placeholderLabelEl.textContent = placeholderLabel;
+    }
+
+    if (dotsWrap) {
+      dotsWrap.querySelectorAll(".lightbox-dot").forEach((dot, i) => {
+        dot.classList.toggle("is-active", i === currentIndex);
+      });
+    }
+  }
+
+  function buildDots() {
+    if (!dotsWrap) return;
+    dotsWrap.innerHTML = "";
+    const count = Math.max(images.length, 1);
+    media?.classList.toggle("has-multiple", count > 1);
+    dotsWrap.classList.toggle("has-multiple", count > 1);
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "lightbox-dot";
+      dot.setAttribute("aria-label", `Photo ${i + 1}`);
+      dot.addEventListener("click", () => {
+        currentIndex = i;
+        renderImage();
+      });
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function open(trigger: HTMLElement) {
+    const raw = trigger.dataset.images ?? "[]";
+    images = (JSON.parse(raw) as string[]).filter(Boolean);
+    currentIndex = 0;
+    placeholderLabel = trigger.dataset.placeholder ?? "Photo à venir";
+
+    if (tagEl) tagEl.textContent = `${trigger.dataset.location ?? ""} · ${trigger.dataset.year ?? ""}`;
+    if (titleEl) titleEl.textContent = trigger.dataset.title ?? "";
+    if (descriptionEl) descriptionEl.textContent = trigger.dataset.description ?? "";
+
+    buildDots();
+    renderImage();
+
+    lightbox?.classList.add("is-open");
+    lightbox?.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    if (!REDUCED_MOTION && panel) {
+      gsap.set(panel, { opacity: 0, scale: 0.96 });
+      gsap.to(panel, { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" });
+    }
+  }
+
+  function close() {
+    lightbox?.classList.remove("is-open");
+    lightbox?.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function next() {
+    if (images.length < 2) return;
+    currentIndex = (currentIndex + 1) % images.length;
+    renderImage();
+  }
+
+  function prev() {
+    if (images.length < 2) return;
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    renderImage();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-lightbox-trigger]").forEach((trigger) => {
+    trigger.setAttribute("role", "button");
+    trigger.setAttribute("tabindex", "0");
+    trigger.addEventListener("click", () => open(trigger));
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open(trigger);
+      }
+    });
+  });
+
+  lightbox?.querySelectorAll("[data-lightbox-close]").forEach((el) => {
+    el.addEventListener("click", close);
+  });
+
+  lightbox?.querySelector("[data-lightbox-prev]")?.addEventListener("click", prev);
+  lightbox?.querySelector("[data-lightbox-next]")?.addEventListener("click", next);
+
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox?.classList.contains("is-open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
+  });
+</script>

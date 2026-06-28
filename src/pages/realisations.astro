@@ -2,8 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Lightbox from "../components/Lightbox.astro";
 import PlaceholderImage from "../components/PlaceholderImage.astro";
-import { getEntry, getCollection } from "astro:content";
+import { getEntry, getCollection, type CollectionEntry } from "astro:content";
 
 const page = (await getEntry("pages", "realisations"))!.data;
 const realisations = (await getCollection("realisations")).sort(
@@ -14,6 +15,19 @@ const full = realisations.find((r) => r.data.size === "full");
 const normal = realisations.find((r) => r.data.size === "normal");
 const tall = realisations.find((r) => r.data.size === "tall");
 const feature = realisations.find((r) => r.data.size === "feature");
+
+function lightboxData(entry: CollectionEntry<"realisations">) {
+  const images = [entry.data.image, ...(entry.data.gallery ?? [])].filter(Boolean);
+  return {
+    "data-lightbox-trigger": true,
+    "data-images": JSON.stringify(images),
+    "data-location": entry.data.location,
+    "data-year": entry.data.year,
+    "data-title": entry.data.title,
+    "data-description": entry.data.description ?? "",
+    "data-placeholder": `Chantier — ${entry.data.title}`,
+  };
+}
 
 const filters = [
   { label: "Tout", value: "all" },
@@ -47,7 +61,7 @@ const filters = [
   <section class="gallery container">
     {
       full && (
-        <div class="gallery-full reveal" data-category={full.data.category} data-hover-zoom>
+        <div class="gallery-full reveal" data-category={full.data.category} data-hover-zoom {...lightboxData(full)}>
           <PlaceholderImage
             src={full.data.image}
             alt={full.data.title}
@@ -65,7 +79,7 @@ const filters = [
     <div class="gallery-pair">
       {
         normal && (
-          <div class="reveal" data-category={normal.data.category} data-hover-zoom>
+          <div class="reveal" data-category={normal.data.category} data-hover-zoom {...lightboxData(normal)}>
             <PlaceholderImage src={normal.data.image} alt={normal.data.title} label="Chantier" height="380px" />
             <div class="gallery-caption gallery-caption-static">
               <span class="tag-muted">{normal.data.location} · {normal.data.year}</span>
@@ -76,7 +90,7 @@ const filters = [
       }
       {
         tall && (
-          <div class="reveal" data-category={tall.data.category} data-hover-zoom>
+          <div class="reveal" data-category={tall.data.category} data-hover-zoom {...lightboxData(tall)}>
             <PlaceholderImage src={tall.data.image} alt={tall.data.title} label="Chantier" height="470px" />
             <div class="gallery-caption gallery-caption-static">
               <span class="tag-muted">{tall.data.location} · {tall.data.year}</span>
@@ -96,7 +110,7 @@ const filters = [
             <div class="feature-rule" />
             <p class="feature-description">{feature.data.description}</p>
           </div>
-          <div class="reveal" data-hover-zoom>
+          <div class="reveal" data-hover-zoom {...lightboxData(feature)}>
             <PlaceholderImage
               src={feature.data.image}
               alt={feature.data.title}
@@ -113,6 +127,7 @@ const filters = [
     </div>
   </section>
 
+  <Lightbox />
   <Footer />
 </Layout>
 
