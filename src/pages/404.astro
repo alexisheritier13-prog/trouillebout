@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Page introuvable">
+  <Header current="accueil" />
+  <section class="container not-found">
+    <div class="eyebrow"><span class="rule"></span>Erreur 404</div>
+    <h1 class="not-found-title">Page introuvable</h1>
+    <p class="not-found-text">Cette page n'existe pas ou plus.</p>
+    <a href="/" class="btn btn-primary">Retour à l'accueil →</a>
+  </section>
+  <Footer />
+</Layout>
+
+<style>
+  .not-found {
+    padding: 100px 40px;
+    text-align: center;
+  }
+
+  .not-found .eyebrow {
+    justify-content: center;
+  }
+
+  .not-found-title {
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1;
+  }
+
+  .not-found-text {
+    font-size: 16px;
+    color: var(--text);
+    margin: 20px 0 32px;
+  }
+</style>

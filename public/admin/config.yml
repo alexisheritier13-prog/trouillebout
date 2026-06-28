@@ -1,0 +1,161 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: "fr"
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "settings"
+    label: "Coordonnées & réglages"
+    files:
+      - name: "site"
+        label: "Coordonnées de l'entreprise"
+        file: "src/content/settings/site.json"
+        fields:
+          - { label: "Nom de l'entreprise", name: "companyName", widget: "string" }
+          - { label: "Activité (sous le logo)", name: "tagline", widget: "string" }
+          - { label: "Téléphone", name: "phone", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Ville", name: "addressLine", widget: "string" }
+          - { label: "Code postal", name: "postalCode", widget: "string" }
+          - { label: "Horaires", name: "hours", widget: "string" }
+          - { label: "Phrase d'accroche du footer", name: "footerTagline", widget: "text" }
+          - { label: "Année de copyright", name: "copyrightYear", widget: "string" }
+          - { label: "Mention zone géographique (footer)", name: "locationTag", widget: "string" }
+
+  - name: "pages"
+    label: "Contenu des pages"
+    files:
+      - name: "home"
+        label: "Page Accueil"
+        file: "src/content/pages/home.json"
+        fields:
+          - { label: "Eyebrow (au-dessus du titre)", name: "heroEyebrow", widget: "string" }
+          - { label: "Titre — ligne 1", name: "heroLine1", widget: "string" }
+          - { label: "Titre — ligne 2", name: "heroLine2", widget: "string" }
+          - { label: "Titre — ligne 3 (préfixe avant le mot orange)", name: "heroLine3Prefix", widget: "string" }
+          - { label: "Mot en orange (fin du titre)", name: "heroAccent", widget: "string" }
+          - { label: "Paragraphe d'intro", name: "heroParagraph", widget: "text" }
+          - { label: "Bouton principal", name: "ctaPrimaryLabel", widget: "string" }
+          - { label: "Bouton secondaire", name: "ctaSecondaryLabel", widget: "string" }
+          - { label: "Réassurance 1", name: "reassurance1", widget: "string" }
+          - { label: "Réassurance 2", name: "reassurance2", widget: "string" }
+          - { label: "Photo hero", name: "heroImage", widget: "image", required: false }
+          - { label: "Badge — nombre", name: "badgeStatNumber", widget: "string" }
+          - { label: "Badge — légende", name: "badgeStatLabel", widget: "string" }
+          - { label: "Badge années — nombre", name: "badgeYearsNumber", widget: "string" }
+          - { label: "Badge années — légende", name: "badgeYearsLabel", widget: "string" }
+          - { label: "Services — eyebrow", name: "servicesEyebrow", widget: "string" }
+          - { label: "Services — titre", name: "servicesTitle", widget: "string" }
+          - { label: "Services — lien", name: "servicesLinkLabel", widget: "string" }
+          - { label: "Pourquoi nous — eyebrow", name: "aboutEyebrow", widget: "string" }
+          - { label: "Pourquoi nous — titre ligne 1", name: "aboutTitleLine1", widget: "string" }
+          - { label: "Pourquoi nous — titre ligne 2", name: "aboutTitleLine2", widget: "string" }
+          - { label: "Pourquoi nous — paragraphe", name: "aboutParagraph", widget: "text" }
+          - { label: "Pourquoi nous — photo", name: "aboutImage", widget: "image", required: false }
+          - label: "Statistiques (3)"
+            name: "stats"
+            widget: "list"
+            fields:
+              - { label: "Valeur", name: "value", widget: "string" }
+              - { label: "Libellé", name: "label", widget: "string" }
+          - { label: "Process — eyebrow", name: "processEyebrow", widget: "string" }
+          - { label: "Process — titre", name: "processTitle", widget: "string" }
+          - label: "Étapes du process (3)"
+            name: "processSteps"
+            widget: "list"
+            fields:
+              - { label: "Numéro", name: "number", widget: "string" }
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Texte", name: "text", widget: "text" }
+          - { label: "Réalisations — eyebrow", name: "realisationsEyebrow", widget: "string" }
+          - { label: "Réalisations — titre", name: "realisationsTitle", widget: "string" }
+          - { label: "Réalisations — lien", name: "realisationsLinkLabel", widget: "string" }
+          - { label: "CTA — titre", name: "ctaTitle", widget: "string" }
+          - { label: "CTA — texte", name: "ctaText", widget: "text" }
+          - { label: "CTA — bouton", name: "ctaButtonLabel", widget: "string" }
+
+      - name: "services_page"
+        label: "Page Services (en-tête)"
+        file: "src/content/pages/services.json"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Paragraphe d'intro", name: "intro", widget: "text" }
+          - { label: "CTA — titre", name: "ctaTitle", widget: "string" }
+          - { label: "CTA — texte", name: "ctaText", widget: "text" }
+          - { label: "CTA — bouton", name: "ctaButtonLabel", widget: "string" }
+
+      - name: "realisations_page"
+        label: "Page Réalisations (en-tête)"
+        file: "src/content/pages/realisations.json"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Lien « charger plus »", name: "loadMoreLabel", widget: "string" }
+
+      - name: "contact_page"
+        label: "Page Contact"
+        file: "src/content/pages/contact.json"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Titre — ligne 1", name: "titleLine1", widget: "string" }
+          - { label: "Titre — ligne 2", name: "titleLine2", widget: "string" }
+          - { label: "Citation (bas de la colonne bleue)", name: "quote", widget: "text" }
+          - { label: "Titre du formulaire", name: "formTitle", widget: "string" }
+          - { label: "Message de confirmation après envoi", name: "confirmationMessage", widget: "text" }
+
+  - name: "services"
+    label: "Services (5 métiers)"
+    folder: "src/content/services"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    fields:
+      - { label: "Ordre d'affichage", name: "order", widget: "number" }
+      - { label: "Titre complet (page Services)", name: "title", widget: "string" }
+      - { label: "Titre court (carte Accueil, optionnel)", name: "shortTitle", widget: "string", required: false }
+      - { label: "Résumé (carte Accueil, optionnel)", name: "excerpt", widget: "text", required: false }
+      - { label: "Description (page Services)", name: "description", widget: "text" }
+      - label: "Icône (carte Accueil, optionnel)"
+        name: "icon"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Mur / brique", value: "maconnerie" }
+          - { label: "Maison", value: "maison" }
+          - { label: "Structure", value: "structure" }
+      - { label: "Photo", name: "image", widget: "image", required: false }
+
+  - name: "realisations"
+    label: "Réalisations (chantiers)"
+    folder: "src/content/realisations"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    fields:
+      - { label: "Ordre d'affichage", name: "order", widget: "number" }
+      - { label: "Lieu", name: "location", widget: "string" }
+      - { label: "Année", name: "year", widget: "string" }
+      - { label: "Titre du chantier", name: "title", widget: "string" }
+      - label: "Catégorie"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Maçonnerie", value: "maconnerie" }
+          - { label: "Rénovation", value: "renovation" }
+          - { label: "Construction neuve", value: "construction-neuve" }
+      - label: "Taille de la vignette"
+        name: "size"
+        widget: "select"
+        hint: "Définit la mise en page sur la page Réalisations : une seule photo en « pleine largeur », une en « grande »/« normale » dans la paire du milieu, une en « mise en avant » (texte + photo verticale)."
+        options:
+          - { label: "Pleine largeur", value: "full" }
+          - { label: "Grande (paire)", value: "tall" }
+          - { label: "Normale (paire)", value: "normal" }
+          - { label: "Mise en avant (avec texte)", value: "feature" }
+      - { label: "Description (uniquement pour « Mise en avant »)", name: "description", widget: "text", required: false }
+      - { label: "Photo", name: "image", widget: "image", required: false }

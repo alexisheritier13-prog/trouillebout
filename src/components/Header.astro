@@ -1,0 +1,200 @@
+---
+import { getEntry } from "astro:content";
+
+interface Props {
+  current: "accueil" | "services" | "realisations" | "contact";
+}
+
+const { current } = Astro.props;
+const settings = await getEntry("settings", "site");
+const { companyName, tagline } = settings!.data;
+
+const links = [
+  { href: "/", label: "Accueil", key: "accueil" },
+  { href: "/services/", label: "Services", key: "services" },
+  { href: "/realisations/", label: "Réalisations", key: "realisations" },
+  { href: "/contact/", label: "Contact", key: "contact" },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-name">{companyName}</span>
+      <span class="logo-tag">{tagline}</span>
+    </a>
+    <nav class="main-nav">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={["nav-link", { active: current === link.key }]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a href="/contact/" class="btn btn-primary nav-cta">Devis gratuit</a>
+    </nav>
+    <button class="burger" id="burger-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class:list={["mobile-link", { active: current === link.key }]}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a href="/contact/" class="btn btn-primary mobile-cta">Devis gratuit</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-name {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+
+  .logo-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5a6b82;
+    text-decoration: none;
+    border-bottom: 1.5px solid transparent;
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--navy);
+    border-bottom-color: var(--orange);
+  }
+
+  .nav-cta {
+    padding: 11px 20px;
+    font-size: 12px;
+  }
+
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .burger span {
+    display: block;
+    height: 2px;
+    background: var(--navy);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px var(--side-pad) 24px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-link {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #5a6b82;
+    text-decoration: none;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-link.active {
+    color: var(--navy);
+  }
+
+  .mobile-cta {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .main-nav {
+      display: none;
+    }
+
+    .burger {
+      display: flex;
+    }
+
+    .mobile-nav.is-open {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("burger-toggle");
+  const nav = document.getElementById("mobile-nav");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = nav?.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+  });
+</script>

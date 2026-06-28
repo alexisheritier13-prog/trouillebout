@@ -1,0 +1,216 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import { getEntry } from "astro:content";
+
+const page = (await getEntry("pages", "contact"))!.data;
+const settings = (await getEntry("settings", "site"))!.data;
+---
+
+<Layout title="Contact">
+  <Header current="contact" />
+
+  <section class="split">
+    <div class="split-left">
+      <div class="eyebrow"><span class="rule"></span>{page.eyebrow}</div>
+      <h1 class="contact-title">{page.titleLine1}<br />{page.titleLine2}</h1>
+
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-label">Adresse</div>
+          <div class="info-value">{settings.addressLine}, {settings.postalCode} · Loir-et-Cher</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Téléphone</div>
+          <div class="info-value info-phone">{settings.phone}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Email</div>
+          <div class="info-value">{settings.email}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Horaires</div>
+          <div class="info-value">{settings.hours}</div>
+        </div>
+      </div>
+
+      <p class="quote">{page.quote}</p>
+    </div>
+
+    <div class="split-right">
+      <h2 class="form-title">{page.formTitle}</h2>
+      <form id="contact-form" class="contact-form">
+        <input class="fld" type="text" name="nom" placeholder="Nom" aria-label="Nom" required />
+        <input class="fld" type="tel" name="telephone" placeholder="Téléphone" aria-label="Téléphone" required />
+        <select class="fld" name="type" aria-label="Type de projet" required>
+          <option value="" disabled selected>Type de projet</option>
+          <option>Maçonnerie traditionnelle</option>
+          <option>Rénovation &amp; restauration</option>
+          <option>Construction neuve</option>
+          <option>Dallage &amp; carrelage extérieur</option>
+          <option>Enduits &amp; ravalement</option>
+          <option>Autre</option>
+        </select>
+        <textarea class="fld" name="message" rows="3" placeholder="Votre message" aria-label="Message"></textarea>
+        <button type="submit" class="btn btn-navy form-submit">Envoyer →</button>
+        <p class="form-feedback" id="form-feedback" role="status"></p>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 74px);
+  }
+
+  .split-left {
+    background: var(--navy);
+    color: var(--white);
+    padding: 80px 72px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-title {
+    font-weight: 700;
+    font-size: 58px;
+    line-height: 0.98;
+    color: var(--white);
+  }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 54px;
+  }
+
+  .info-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7e90a8;
+    margin-bottom: 8px;
+  }
+
+  .info-value {
+    font-size: 17px;
+    color: var(--paper);
+  }
+
+  .info-phone {
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--white);
+  }
+
+  .quote {
+    font-family: "Oswald", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 21px;
+    line-height: 1.4;
+    color: #9fb0c6;
+    margin-top: auto;
+    padding-top: 48px;
+  }
+
+  .split-right {
+    background: var(--paper);
+    padding: 80px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-title {
+    font-weight: 600;
+    font-size: 34px;
+    margin: 0 0 40px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .fld {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1.5px solid var(--orange);
+    background: transparent;
+    font-family: "Archivo", sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    padding: 10px 2px;
+    outline: none;
+  }
+
+  .fld::placeholder {
+    color: #9aa7b8;
+  }
+
+  select.fld {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%23ff7a2f' stroke-width='1.5' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+  }
+
+  textarea.fld {
+    resize: none;
+  }
+
+  .form-submit {
+    align-self: flex-start;
+    margin-top: 8px;
+    font-size: 13px;
+    padding: 17px 36px;
+  }
+
+  .form-feedback {
+    margin: 0;
+    font-size: 14px;
+    color: var(--navy);
+    min-height: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .split {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .split-left,
+    .split-right {
+      padding: 56px 24px;
+    }
+
+    .contact-title {
+      font-size: 40px;
+    }
+
+    .quote {
+      margin-top: 40px;
+    }
+  }
+</style>
+
+<script define:vars={{ confirmationMessage: page.confirmationMessage }}>
+  const form = document.getElementById("contact-form");
+  const feedback = document.getElementById("form-feedback");
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (feedback) feedback.textContent = confirmationMessage;
+    form.reset();
+  });
+</script>

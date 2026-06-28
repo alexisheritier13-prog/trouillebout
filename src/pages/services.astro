@@ -1,0 +1,197 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PlaceholderImage from "../components/PlaceholderImage.astro";
+import { getEntry, getCollection } from "astro:content";
+
+const page = (await getEntry("pages", "services"))!.data;
+const services = (await getCollection("services")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Layout title="Services">
+  <Header current="services" />
+
+  <section class="page-head container">
+    <div class="eyebrow"><span class="rule"></span>{page.eyebrow}</div>
+    <h1 class="page-title">{page.title}</h1>
+    <p class="page-intro">{page.intro}</p>
+  </section>
+
+  <section class="services-editorial container">
+    {
+      services.map((service, i) => (
+        <div class:list={["service-row", { "image-first": i % 2 === 1 }]}>
+          <div class="service-text reveal">
+            <div class="service-heading">
+              <span class="service-number">{String(service.data.order).padStart(2, "0")}</span>
+              <h2 class="service-name">{service.data.title}</h2>
+            </div>
+            <div class="service-rule" />
+            <p class="service-description">{service.data.description}</p>
+          </div>
+          <div class="service-photo reveal" data-hover-zoom>
+            <PlaceholderImage
+              src={service.data.image}
+              alt={service.data.title}
+              label={`Photo — ${service.data.title}`}
+              height="380px"
+            />
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-inner reveal">
+      <div>
+        <h2 class="cta-title">{page.ctaTitle}</h2>
+        <p class="cta-text">{page.ctaText}</p>
+      </div>
+      <a href="/contact/" class="btn btn-primary cta-btn">{page.ctaButtonLabel} →</a>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page-head {
+    padding: 78px 40px 64px;
+  }
+
+  .page-title {
+    font-weight: 700;
+    font-size: 104px;
+    line-height: 0.9;
+    letter-spacing: 0.004em;
+  }
+
+  .page-intro {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    margin: 34px 0 0;
+    max-width: 560px;
+  }
+
+  .services-editorial {
+    padding: 0 40px 30px;
+  }
+
+  .service-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    padding: 56px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .services-editorial .service-row:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-row.image-first .service-text {
+    order: 1;
+  }
+
+  .service-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .service-number {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--orange);
+  }
+
+  .service-name {
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .service-rule {
+    width: 48px;
+    height: 2px;
+    background: var(--orange);
+    margin: 18px 0 22px;
+  }
+
+  .service-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 0;
+    max-width: 440px;
+  }
+
+  .cta-band {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .cta-inner {
+    padding: 72px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .cta-title {
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .cta-text {
+    font-size: 17px;
+    color: #9fb0c6;
+    margin: 14px 0 0;
+  }
+
+  .cta-btn {
+    flex-shrink: 0;
+    font-size: 14px;
+    padding: 18px 34px;
+  }
+
+  @media (max-width: 900px) {
+    .page-title {
+      font-size: 58px;
+      white-space: normal;
+    }
+
+    .service-row,
+    .service-row.image-first .service-text {
+      grid-template-columns: 1fr;
+      order: 0;
+    }
+
+    .service-row {
+      gap: 28px;
+      padding: 40px 0;
+    }
+
+    .service-name {
+      font-size: 30px;
+    }
+
+    .cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 56px 24px;
+    }
+  }
+</style>

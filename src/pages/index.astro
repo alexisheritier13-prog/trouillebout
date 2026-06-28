@@ -1,0 +1,648 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ServiceIcon from "../components/ServiceIcon.astro";
+import PlaceholderImage from "../components/PlaceholderImage.astro";
+import { getEntry, getCollection } from "astro:content";
+
+const home = (await getEntry("pages", "home"))!.data;
+
+const services = (await getCollection("services"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const realisations = (await getCollection("realisations")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const [realFeature, realSmall1, realSmall2] = realisations;
+---
+
+<Layout title="Accueil">
+  <Header current="accueil" />
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div>
+      <div class="eyebrow" data-hero-item>
+        <span class="rule"></span>
+        {home.heroEyebrow}
+      </div>
+      <h1 class="hero-title" data-hero-item>
+        {home.heroLine1}<br />
+        {home.heroLine2}<br />
+        {home.heroLine3Prefix}<span class="accent">{home.heroAccent}</span>
+      </h1>
+      <p class="hero-paragraph" data-hero-item>{home.heroParagraph}</p>
+      <div class="hero-actions" data-hero-item>
+        <a href="/contact/" class="btn btn-primary">{home.ctaPrimaryLabel} →</a>
+        <a href="/realisations/" class="btn btn-outline">{home.ctaSecondaryLabel}</a>
+      </div>
+      <div class="hero-reassurance" data-hero-item>
+        <span><span class="check">✓</span> {home.reassurance1}</span>
+        <span><span class="check">✓</span> {home.reassurance2}</span>
+      </div>
+    </div>
+    <div class="hero-photo-wrap" data-hero-item>
+      <PlaceholderImage
+        src={home.heroImage}
+        alt="Photo de chantier"
+        label="Photo de chantier — façade / pierre"
+        height="520px"
+      />
+      <div class="badge badge-orange">
+        <div class="badge-number">{home.badgeStatNumber}</div>
+        <div class="badge-label">{home.badgeStatLabel}</div>
+      </div>
+      <div class="badge badge-navy">
+        <div class="badge-number">{home.badgeYearsNumber}<span class="badge-suffix"> ans</span></div>
+        <div class="badge-label badge-label-navy">{home.badgeYearsLabel}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow"><span class="rule"></span>{home.servicesEyebrow}</div>
+          <h2 class="section-title">{home.servicesTitle}</h2>
+        </div>
+        <a href="/services/" class="link-underline">{home.servicesLinkLabel} →</a>
+      </div>
+      <div class="services-grid">
+        {
+          services.map((service) => (
+            <div class="service-card reveal">
+              <ServiceIcon icon={service.data.icon} />
+              <h3 class="service-title">{service.data.shortTitle ?? service.data.title}</h3>
+              <p class="service-excerpt">{service.data.excerpt}</p>
+              <a href="/services/" class="link-orange">En savoir plus →</a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOUS -->
+  <section class="about container">
+    <div class="about-photo reveal">
+      <PlaceholderImage
+        src={home.aboutImage}
+        alt="Photo équipe / atelier"
+        label="Photo équipe / atelier"
+        height="440px"
+      />
+    </div>
+    <div class="reveal">
+      <div class="eyebrow"><span class="rule"></span>{home.aboutEyebrow}</div>
+      <h2 class="section-title about-title">{home.aboutTitleLine1}<br />{home.aboutTitleLine2}</h2>
+      <p class="about-paragraph">{home.aboutParagraph}</p>
+      <div class="stats-row">
+        {
+          home.stats.map((stat: { value: string; label: string }, i: number) => {
+            const numeric = parseInt(stat.value.replace(/\D/g, ""), 10);
+            const prefix = stat.value.trim().startsWith("+") ? "+" : "";
+            return (
+              <div class:list={["stat", { "stat-bordered": i > 0 }]}>
+                <div
+                  class:list={["stat-value", { "stat-accent": i === home.stats.length - 1 }]}
+                  data-counter-to={numeric}
+                  data-counter-prefix={prefix}
+                >
+                  {prefix}{numeric}
+                </div>
+                <div class="stat-label">{stat.label}</div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="container">
+      <div class="process-head reveal">
+        <div class="eyebrow process-eyebrow"><span class="rule"></span>{home.processEyebrow}</div>
+        <h2 class="section-title">{home.processTitle}</h2>
+      </div>
+      <div class="process-grid">
+        {
+          home.processSteps.map((step: { number: string; title: string; text: string }, i: number) => (
+            <div class:list={["process-step", "reveal", { "process-step-border": i < home.processSteps.length - 1 }]}>
+              <div class="process-number">{step.number}</div>
+              <h3 class="process-title">{step.title}</h3>
+              <p class="process-text">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉALISATIONS PREVIEW -->
+  <section class="realisations-preview container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow"><span class="rule"></span>{home.realisationsEyebrow}</div>
+        <h2 class="section-title">{home.realisationsTitle}</h2>
+      </div>
+      <a href="/realisations/" class="link-underline">{home.realisationsLinkLabel} →</a>
+    </div>
+    <div class="realisations-grid">
+      <div class="real-large reveal" data-hover-zoom>
+        <PlaceholderImage
+          src={realFeature?.data.image}
+          alt={realFeature?.data.title}
+          label="Chantier — vue large"
+          height="440px"
+        />
+        <div class="real-caption real-caption-large">
+          <span class="real-tag">{realFeature?.data.location} · {realFeature?.data.year}</span>
+          <div class="real-title-large">{realFeature?.data.title}</div>
+        </div>
+      </div>
+      <div class="real-small-col">
+        {
+          [realSmall1, realSmall2].map((item) => (
+            <div class="real-small reveal" data-hover-zoom>
+              <PlaceholderImage
+                src={item?.data.image}
+                alt={item?.data.title}
+                label="Chantier"
+                height="210px"
+              />
+              <div class="real-caption">
+                <span class="real-tag-small">{item?.data.location} · {item?.data.year}</span>
+                <div class="real-title-small">{item?.data.title}</div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner reveal">
+      <div>
+        <h2 class="cta-title">{home.ctaTitle}</h2>
+        <p class="cta-text">{home.ctaText}</p>
+      </div>
+      <a href="/contact/" class="btn btn-primary cta-btn">{home.ctaButtonLabel} →</a>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .hero {
+    padding: 72px 40px 80px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-weight: 700;
+    font-size: 74px;
+    line-height: 0.96;
+    letter-spacing: 0.004em;
+  }
+
+  .accent {
+    color: var(--orange);
+  }
+
+  .hero-paragraph {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text);
+    margin: 26px 0 0;
+    max-width: 440px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 34px;
+    flex-wrap: wrap;
+  }
+
+  .hero-reassurance {
+    display: flex;
+    gap: 26px;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #5a6b82;
+    flex-wrap: wrap;
+  }
+
+  .hero-reassurance span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .check {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .hero-photo-wrap {
+    position: relative;
+  }
+
+  .badge {
+    position: absolute;
+    color: var(--white);
+    padding: 18px 22px;
+  }
+
+  .badge-orange {
+    background: var(--orange);
+    left: -24px;
+    bottom: 34px;
+  }
+
+  .badge-navy {
+    background: var(--navy);
+    right: -18px;
+    top: 30px;
+    padding: 14px 18px;
+  }
+
+  .badge-number {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .badge-navy .badge-number {
+    font-weight: 600;
+    font-size: 26px;
+  }
+
+  .badge-suffix {
+    font-size: 15px;
+  }
+
+  .badge-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .badge-label-navy {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: #8ba0bb;
+    margin-top: 3px;
+  }
+
+  .services-section {
+    background: var(--paper);
+  }
+
+  .services-section .container {
+    padding-top: 84px;
+    padding-bottom: 84px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--white);
+    padding: 36px 32px;
+    border-top: 3px solid var(--navy);
+  }
+
+  .service-title {
+    font-weight: 600;
+    font-size: 26px;
+    margin: 22px 0 12px;
+  }
+
+  .service-excerpt {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 22px;
+  }
+
+  .link-orange {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-decoration: none;
+  }
+
+  .about {
+    padding: 90px 40px;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .about-title {
+    font-size: 46px;
+    line-height: 1.02;
+    margin-top: 0;
+  }
+
+  .about-paragraph {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text);
+    margin: 24px 0 0;
+    max-width: 480px;
+  }
+
+  .stats-row {
+    display: flex;
+    margin-top: 38px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat {
+    flex: 1;
+    padding: 24px 0;
+  }
+
+  .stat-bordered {
+    border-left: 1px solid var(--border);
+  }
+
+  .stat-value {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--navy);
+  }
+
+  .stat-accent {
+    color: var(--orange);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .process {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .process .container {
+    padding: 84px 40px;
+  }
+
+  .process-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .process-eyebrow {
+    justify-content: center;
+  }
+
+  .process h2 {
+    color: var(--white);
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .process-step {
+    padding: 0 36px;
+  }
+
+  .process-step-border {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .process-number {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 1;
+    color: rgba(255, 122, 47, 0.9);
+  }
+
+  .process-title {
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--white);
+    margin: 18px 0 12px;
+  }
+
+  .process-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #9fb0c6;
+    margin: 0;
+  }
+
+  .realisations-preview {
+    padding: 90px 40px;
+  }
+
+  .realisations-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
+  .real-large,
+  .real-small {
+    position: relative;
+  }
+
+  .real-small-col {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .real-caption {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .real-caption-large {
+    left: 24px;
+    bottom: 24px;
+  }
+
+  .real-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+  }
+
+  .real-title-large {
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-top: 8px;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .real-tag-small {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .real-title-small {
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  }
+
+  .cta {
+    background: var(--paper);
+  }
+
+  .cta-inner {
+    padding: 80px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .cta-title {
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1;
+  }
+
+  .cta-text {
+    font-size: 18px;
+    color: var(--text);
+    margin: 16px 0 0;
+  }
+
+  .cta-btn {
+    flex-shrink: 0;
+    font-size: 14px;
+    padding: 18px 34px;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 48px 24px 56px;
+      gap: 36px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+    }
+
+    .badge-orange,
+    .badge-navy {
+      left: auto;
+    }
+
+    .badge-orange {
+      left: 0;
+    }
+
+    .badge-navy {
+      right: 0;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about {
+      grid-template-columns: 1fr;
+      padding: 56px 24px;
+    }
+
+    .process-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .process-step-border {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 28px;
+    }
+
+    .realisations-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 56px 24px;
+    }
+
+    .section-title {
+      font-size: 36px;
+    }
+  }
+</style>

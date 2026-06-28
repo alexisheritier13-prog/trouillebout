@@ -1,0 +1,21 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  label: string;
+  height: string;
+  class?: string;
+}
+
+const { src, alt, label, height, class: className = "" } = Astro.props;
+---
+
+<div class={`placeholder-slot ${className}`} style={`height:${height};`}>
+  {
+    src ? (
+      <img src={src} alt={alt} />
+    ) : (
+      <span>{label}</span>
+    )
+  }
+</div>

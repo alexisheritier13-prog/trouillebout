@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Maçonnerie générale, rénovation et gros œuvre à Vendôme et alentour." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — Trouillebout Maçonnerie</title>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+      import { initRevealAnimations } from "../scripts/animations";
+
+      gsap.registerPlugin(ScrollTrigger);
+      initRevealAnimations();
+    </script>
+  </body>
+</html>
