@@ -18,9 +18,21 @@ const { title, description = "Maçonnerie générale, rénovation et gros œuvre
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title} — Trouillebout Maçonnerie</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <slot />
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
     <script>
       import { gsap } from "gsap";
       import { ScrollTrigger } from "gsap/ScrollTrigger";
